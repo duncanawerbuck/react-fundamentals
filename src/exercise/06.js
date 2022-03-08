@@ -5,8 +5,7 @@ import * as React from 'react';
 
 function UsernameForm({onSubmitUsername}) {
   const inputRef = React.useRef(null);
-  const [error, setError] = React.useState('');
-  const username = inputRef.current.value;
+  const [username, setUsername] = React.useState('');
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -14,16 +13,7 @@ function UsernameForm({onSubmitUsername}) {
   };
 
   const handleChange = event => {
-    const username = event.target.value;
-    const hasError =
-      typeof username !== 'string' ||
-      !username.length ||
-      username !== username.toLowerCase();
-
-    if (hasError) {
-      setError('Username must be lowercase alphanumeric');
-      alert(error);
-    }
+    setUsername(event.target.value?.toLowerCase() || '');
   };
 
   return (
@@ -33,6 +23,7 @@ function UsernameForm({onSubmitUsername}) {
         <input
           type="text"
           id="usernameInput"
+          value={username}
           ref={inputRef}
           onChange={handleChange}
         />
@@ -43,7 +34,12 @@ function UsernameForm({onSubmitUsername}) {
 }
 
 function App() {
-  const onSubmitUsername = username => alert(`You entered: ${username}`);
+  const onSubmitUsername = username => {
+    const alertMessage = username
+      ? `You entered: ${username}`
+      : 'You did not enter a username';
+    alert(alertMessage);
+  };
   return <UsernameForm onSubmitUsername={onSubmitUsername} />;
 }
 
